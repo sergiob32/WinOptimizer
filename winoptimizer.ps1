@@ -40,6 +40,26 @@ Function Show-Summary {
     Copy-Item $logFile -Destination "C:\Optimización\Log_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt" -Force -ErrorAction SilentlyContinue
 }
 
+# Función de ayuda
+Function Show-Help {
+    Clear-Host
+    Write-Host "=================== AYUDA DE USO ===================" -ForegroundColor Cyan
+    Write-Host "Este script optimiza sistemas Windows 7, 10 y 11." -ForegroundColor Green
+    Write-Host "1. Ejecutar como administrador." -ForegroundColor Yellow
+    Write-Host "2. Aparecerá un menú con opciones como:" -ForegroundColor Yellow
+    Write-Host "   - Eliminar Bloatware" -ForegroundColor White
+    Write-Host "   - Bloquear anuncios y telemetría" -ForegroundColor White
+    Write-Host "   - Optimizar el rendimiento" -ForegroundColor White
+    Write-Host "   - Mejorar la seguridad" -ForegroundColor White
+    Write-Host "   - Actualizar Windows y Drivers" -ForegroundColor White
+    Write-Host "3. Puedes ejecutar cada acción de forma individual o automática." -ForegroundColor Yellow
+    Write-Host "4. Se crea automáticamente un punto de restauración." -ForegroundColor Yellow
+    Write-Host "5. Se genera un log en el escritorio y se guarda copia en C:\Optimización." -ForegroundColor Yellow
+    Write-Host "Presiona Enter para volver al menú principal..."
+    Read-Host | Out-Null
+    Show-Menu
+}
+
 # Detectar versión de Windows
 Function Detect-WindowsVersion {
     $build = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").CurrentBuild
@@ -59,6 +79,7 @@ Function Show-Menu {
     Write-Host "=================================" -ForegroundColor Cyan
     Write-Host "   Optimización para $windowsVersion" -ForegroundColor Green
     Write-Host "=================================" -ForegroundColor Cyan
+    Write-Host "0. Ver instrucciones de uso" -ForegroundColor Yellow
     Write-Host "1. Eliminar Bloatware" -ForegroundColor Yellow
     Write-Host "2. Bloquear Anuncios y Telemetría" -ForegroundColor Yellow
     Write-Host "3. Optimizar Rendimiento" -ForegroundColor Yellow
@@ -67,8 +88,9 @@ Function Show-Menu {
     Write-Host "6. Ejecutar todas las opciones (modo automático)" -ForegroundColor Yellow
     Write-Host "7. Salir" -ForegroundColor Red
 
-    $choice = Read-Host "Seleccione una opción (1-7)"
+    $choice = Read-Host "Seleccione una opción (0-7)"
     Switch ($choice) {
+        "0" { Show-Help }
         "1" { if ((Read-Host "¿Eliminar bloatware? (S/N)").ToUpper() -eq "S") { Log "===[ Ejecutando: Eliminar Bloatware ]==="; Create-RestorePoint; Remove-Bloatware $windowsVersion } }
         "2" { if ((Read-Host "¿Bloquear anuncios y telemetría? (S/N)").ToUpper() -eq "S") { Log "===[ Ejecutando: Bloquear Anuncios y Telemetría ]==="; Create-RestorePoint; Block-Ads-Telemetry $windowsVersion } }
         "3" { if ((Read-Host "¿Optimizar rendimiento? (S/N)").ToUpper() -eq "S") { Log "===[ Ejecutando: Optimizar Rendimiento ]==="; Create-RestorePoint; Optimize-Performance $windowsVersion } }
