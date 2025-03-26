@@ -28,9 +28,7 @@ Haz clic derecho sobre él y selecciona "Ejecutar con PowerShell como administra
 
 O bien, abre PowerShell como administrador y ejecuta lo siguiente:
 
-powershell
-Copiar
-Editar
+
 Set-ExecutionPolicy Bypass -Scope Process -Force
 .\WinOptimizer.ps1
 🔹 Opción 2: Ejecutar desde archivo .exe (si fue compilado)
